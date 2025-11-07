@@ -32,8 +32,16 @@ function App() {
       try {
         const { default: JSZip } = await import('jszip');
         const zip = new JSZip();
-        const safeUserName = userName.trim().replace(/[^a-zA-Z0-9_]/g, '_');
-        const folderName = `振り返りアンケート_${safeUserName}`;
+        // Keep Japanese (Kanji/Kana) and most Unicode; strip only invalid filename chars and control chars
+        const sanitizeForFile = (name: string) =>
+          name
+            .trim()
+            .replace(/[\x00-\x1F\\/:*?"<>|]/g, '') // remove control + invalid path chars
+            .replace(/[\.\s]+$/g, ''); // trim trailing dots/spaces (Windows quirk)
+
+        const displayName = userName.trim();
+        const safeName = sanitizeForFile(displayName) || 'anonymous';
+        const folderName = `振り返りアンケート_${safeName}`;
         const userFolder = zip.folder(folderName);
 
         if (!userFolder) {
@@ -56,7 +64,7 @@ function App() {
         
         const link = document.createElement('a');
         link.href = URL.createObjectURL(zipBlob);
-        link.download = `振り返りアンケート_${safeUserName}.zip`;
+        link.download = `振り返りアンケート_${safeName}.zip`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
