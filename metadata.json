@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Voice Survey Recorder",
+  "description": "A web application to conduct a survey by recording audio answers for a series of questions. Users can download their recordings to upload them to their preferred storage, such as Google Drive.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

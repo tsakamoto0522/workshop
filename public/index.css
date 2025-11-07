@@ -1,0 +1,8 @@
+/* Minimal global styles for the app (kept tiny for CDN Tailwind usage) */
+html, body, #root {
+  height: 100%;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
